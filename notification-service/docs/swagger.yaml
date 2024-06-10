@@ -1,0 +1,9 @@
+basePath: /
+host: localhost:8082
+info:
+  contact: {}
+  description: This service generates and delivers real-time notifications to users.
+  title: Notification Service API
+  version: "1.0"
+paths: {}
+swagger: "2.0"
