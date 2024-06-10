@@ -14,11 +14,20 @@ definitions:
     type: object
   models.User:
     properties:
+      createdAt:
+        type: string
       email:
         type: string
-      id:
-        type: string
       name:
+        description: gorm.Model
+        type: string
+      password:
+        type: string
+      phone:
+        type: integer
+      status:
+        type: string
+      updatedAt:
         type: string
       username:
         type: string

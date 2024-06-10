@@ -123,13 +123,26 @@ const docTemplate = `{
         "models.User": {
             "type": "object",
             "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
-                "id": {
+                "name": {
+                    "description": "gorm.Model",
                     "type": "string"
                 },
-                "name": {
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 },
                 "username": {
