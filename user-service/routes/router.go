@@ -25,5 +25,17 @@ func CreateApp() *gin.Engine {
 		services.GetUser(c, id, username, email)
 	})
 
+	//messaging endpoints
+	app.POST("/messages", func(c *gin.Context) {
+		services.SendMessage(c)
+	})
+
+	//following endpoints
+	app.GET("/users/follow", func(c *gin.Context) {
+		followerId := c.Query("follower")
+		followedId := c.Query("id")
+		services.FollowUser(c, followerId, followedId)
+	})
+
 	return app
 }

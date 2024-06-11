@@ -1,13 +1,15 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"time"
 )
 
 type Following struct {
-	gorm.Model
+	ID         uint `json:"-" gorm:"primarykey"`
 	FollowedID uint
 	FollowerID uint
-	Followed   User `gorm:"foreignkey:FollowedID"`
-	Follower   User `gorm:"foreignkey:FollowerID"`
+	Followed   Users     `gorm:"foreignKey:FollowedID;references:ID" json:"-"`
+	Follower   Users     `gorm:"foreignKey:FollowerID;references:ID" json:"-"`
+	CreatedAt  time.Time `json:"-" gorm:"autoCreateTime"`
+	UpdateAt   time.Time `json:"-" gorm:"autoUpdateTime"`
 }

@@ -15,6 +15,46 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/messages": {
+            "post": {
+                "description": "Send a new message",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "messages"
+                ],
+                "summary": "Send a message",
+                "parameters": [
+                    {
+                        "description": "Message",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Messages"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.SendMessageResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "Get user details by id, username, or email",
@@ -49,7 +89,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.Users"
                         }
                     },
                     "404": {
@@ -79,7 +119,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.Users"
                         }
                     }
                 ],
@@ -98,6 +138,46 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/follow": {
+            "get": {
+                "description": "Create a folloing entry between two users",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "following"
+                ],
+                "summary": "follow user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Follower ID",
+                        "name": "follower",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Following"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -108,7 +188,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/models.User"
+                    "$ref": "#/definitions/models.Users"
                 }
             }
         },
@@ -120,17 +200,52 @@ const docTemplate = `{
                 }
             }
         },
-        "models.User": {
+        "models.Following": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "followedID": {
+                    "type": "integer"
+                },
+                "followerID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Messages": {
+            "type": "object",
+            "properties": {
+                "content": {
                     "type": "string"
                 },
+                "status": {
+                    "type": "string"
+                },
+                "userFromId": {
+                    "type": "integer"
+                },
+                "userToId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.SendMessageResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "$ref": "#/definitions/models.Messages"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Users": {
+            "type": "object",
+            "properties": {
                 "email": {
                     "type": "string"
                 },
                 "name": {
-                    "description": "gorm.Model",
                     "type": "string"
                 },
                 "password": {
@@ -140,9 +255,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
-                    "type": "string"
-                },
-                "updatedAt": {
                     "type": "string"
                 },
                 "username": {

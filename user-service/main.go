@@ -1,10 +1,8 @@
 package main
 
 import (
-	"os"
 	_ "user-service/docs"
-	routes "user-service/routes"
-	"user-service/util"
+	"user-service/routes"
 )
 
 // @title User Service API
@@ -15,8 +13,6 @@ import (
 // @BasePath /
 func main() {
 	app := routes.CreateApp()
-	if os.Getenv("MIGRATE") != "" {
-		util.MigrateModels()
-	}
-	app.Run(":8081")
+
+	app.Run()
 }

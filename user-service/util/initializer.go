@@ -7,8 +7,6 @@ import (
 	"sync"
 	"time"
 
-	models "user-service/models"
-
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -16,17 +14,20 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-var dbInstance *gorm.DB
+var DbInstance *gorm.DB
 var dbOnce sync.Once
 
-func loadEnv() {
+func init() {
+	LoadEnv()
+}
+func LoadEnv() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
 }
 
-func connectDB() (*gorm.DB, error) {
+func ConnectDB() (*gorm.DB, error) {
 	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
@@ -38,47 +39,35 @@ func connectDB() (*gorm.DB, error) {
 		log.New(os.Stdout, "\r\n", log.LstdFlags),
 		logger.Config{
 			SlowThreshold: time.Second,
-			LogLevel:      logger.Info,
+			LogLevel:      logger.Silent,
 			Colorful:      true,
 		},
 	)
 
-	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{
+	DbInstance, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{
 		Logger: newLogger,
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
 	})
+	if os.Getenv("LOG_MODE") == "Info" {
+		DbInstance.Logger.LogMode(logger.Info)
+	}
 	if err != nil {
 		return nil, err
 	}
 
-	return db, nil
+	return DbInstance, nil
 }
 
 func GetDbConnection() *gorm.DB {
-	loadEnv()
-
 	dbOnce.Do(func() {
 		var err error
-		dbInstance, err = connectDB()
+		DbInstance, err = ConnectDB()
 		if err != nil {
 			log.Fatalf("Unable to connect to database: %v\n", err)
 		}
 	})
 
-	return dbInstance
-}
-
-func MigrateModels() {
-	db := GetDbConnection()
-
-	err := db.AutoMigrate(
-		&models.User{},
-		&models.Following{},
-		&models.Messages{},
-	)
-	if err != nil {
-		log.Fatalf("Migration failed: %v\n", err)
-	}
+	return DbInstance
 }
