@@ -1,9 +1,125 @@
 basePath: /
+definitions:
+  models.Comments:
+    properties:
+      content:
+        type: string
+      post_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  models.CreateCommentResponse:
+    properties:
+      comment:
+        $ref: '#/definitions/models.Comments'
+      status:
+        type: string
+    type: object
+  models.CreatePostResponse:
+    properties:
+      post:
+        $ref: '#/definitions/models.Posts'
+      status:
+        type: string
+    type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.Posts:
+    properties:
+      content:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
 host: localhost:8080
 info:
   contact: {}
-  description: This service manages user accounts and profiles.
+  description: This service handles creation, storage, and retrieval of posts.
   title: Post Service API
   version: "1.0"
-paths: {}
+paths:
+  /comments:
+    post:
+      consumes:
+      - application/json
+      description: Create a new comment
+      parameters:
+      - description: Comment Data
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/models.Comments'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreateCommentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create a comment
+      tags:
+      - comments
+  /create-post:
+    post:
+      consumes:
+      - application/json
+      description: Create a new post
+      parameters:
+      - description: Post Data
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/models.Posts'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreatePostResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create a post
+      tags:
+      - posts
+  /update-post:
+    put:
+      consumes:
+      - application/json
+      description: update a post
+      parameters:
+      - description: Post Data
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/models.Posts'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreatePostResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Update a post
+      tags:
+      - posts
 swagger: "2.0"

@@ -2,10 +2,7 @@ package main
 
 import (
 	_ "post-service/docs"
-
-	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	"post-service/routes"
 )
 
 // @title Post Service API
@@ -16,12 +13,7 @@ import (
 // @BasePath /
 
 func main() {
-	app := gin.Default()
+	app := routes.CreateApp()
 
-	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	//users endpoints
-	// app.POST("/users", services.CreateUser)
-	// app.GET("/users/:id", services.GetUser)
-
-	app.Run(":8080")
+	app.Run()
 }

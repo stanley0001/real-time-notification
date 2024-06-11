@@ -10,3 +10,8 @@ type Posts struct {
 	CreatedAt time.Time `json:"-" gorm:"autoCreateTime"`
 	UpdatedAt time.Time `json:"-" gorm:"autoUpdateTime"`
 }
+
+type CreatePostResponse struct {
+	Status string `json:"status"`
+	Post   Posts  `json:"post"`
+}

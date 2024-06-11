@@ -10,3 +10,8 @@ type Comments struct {
 	CreatedAt time.Time `json:"-" gorm:"autoCreateTime"`
 	UpdatedAt time.Time `json:"-" gorm:"autoUpdateTime"`
 }
+
+type CreateCommentResponse struct {
+	Status  string   `json:"status"`
+	Comment Comments `json:"comment"`
+}
