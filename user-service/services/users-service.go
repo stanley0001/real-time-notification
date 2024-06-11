@@ -124,6 +124,45 @@ func FollowUser(c *gin.Context, followerId string, userId string) {
 	c.JSON(http.StatusCreated, followingEntry)
 }
 
+// get followers godoc
+// @Summary user followers
+// @Description get all followers
+// @Tags following
+// @Produce json
+// @Param id query string false "User ID"
+// @Success 200 {object} []models.Following
+// @Failure 404 {object} models.ErrorResponse
+// @Router /users/followers [get]
+func GetFollowers(c *gin.Context) {
+	userId := c.Param("id")
+	var user models.Users
+	err := conn.First(&user, userId).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+	followers := fetchFollowers(user)
+	c.JSON(http.StatusOK, followers)
+}
+
+// get Auth godoc
+// @Summary user authentication
+// @Description authenticate user
+// @Tags auth
+// @Produce json
+// @Param auth body models.Authentication true "Auth Data"
+// @Success 200 {object} []models.AuthenticationResponse
+// @Failure 404 {object} models.ErrorResponse
+// @Router /users/auth [post]
+func Authenticate(c *gin.Context) {
+	//auth logic here
+	c.JSON(http.StatusOK, models.AuthenticationResponse{Token: "demo token"})
+}
+
 func fetchFollowedAndFollowers(userId string, followerId string) (models.Users, models.Users, error) {
 	followers, err := getUser(followerId, "", "")
 	if err != nil {
@@ -149,7 +188,7 @@ func fetchFollowedAndFollowers(userId string, followerId string) (models.Users, 
 
 func fetchFollowers(user models.Users) []models.Users {
 	var followers []models.Users
-	followers = append(followers, models.Users{ID: user.ID}) //TODO :logic to be implemed
+	followers = append(followers, models.Users{ID: user.ID}) //TODO :logic and pagination to be implemed
 	//get followers from followers table using user id
 	return followers
 }

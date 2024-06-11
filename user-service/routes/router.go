@@ -36,6 +36,9 @@ func CreateApp() *gin.Engine {
 		followedId := c.Query("id")
 		services.FollowUser(c, followerId, followedId)
 	})
+	app.GET("/users/followers", func(c *gin.Context) {
+		services.GetFollowers(c)
+	})
 
 	return app
 }
