@@ -3,6 +3,7 @@ package services
 import (
 	"net/http"
 	"post-service/models"
+	"post-service/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,5 +30,6 @@ func CreateComment(c *gin.Context) {
 		return
 	}
 	//TODO:fire notification event
+	util.PublishEvent("create-comment", comment)
 	c.JSON(http.StatusCreated, comment)
 }

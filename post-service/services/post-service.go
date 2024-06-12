@@ -20,7 +20,7 @@ var conn *gorm.DB = util.GetDbConnection()
 // @Param post body models.Posts true "Post Data"
 // @Success 201 {object} models.CreatePostResponse
 // @Failure 400 {object} models.ErrorResponse
-// @Router /create-post [post]
+// @Router /posts/create [post]
 func CreatePost(c *gin.Context) {
 	var post models.Posts
 	if err := c.ShouldBindJSON(&post); err != nil {
@@ -33,6 +33,7 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 	//TODO:fire notification event
+	util.PublishEvent("create-post", post)
 	c.JSON(http.StatusCreated, post)
 }
 
@@ -57,7 +58,7 @@ func UpdatePost(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
-
+	util.PublishEvent("update-post", post)
 	c.JSON(http.StatusCreated, post)
 }
 

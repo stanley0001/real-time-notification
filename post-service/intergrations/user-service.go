@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"post-service/models"
+	models "post-service/models"
 	"post-service/util"
 
 	"github.com/gin-gonic/gin"

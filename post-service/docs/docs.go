@@ -55,7 +55,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/create-post": {
+        "/posts/create": {
             "post": {
                 "description": "Create a new post",
                 "consumes": [

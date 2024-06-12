@@ -84,7 +84,7 @@ paths:
       summary: Create a comment
       tags:
       - comments
-  /create-post:
+  /posts/create:
     post:
       consumes:
       - application/json

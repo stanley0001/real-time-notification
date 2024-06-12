@@ -3,6 +3,7 @@ package main
 import (
 	_ "post-service/docs"
 	"post-service/routes"
+	"post-service/util"
 )
 
 // @title Post Service API
@@ -11,7 +12,9 @@ import (
 
 // @host localhost:8080
 // @BasePath /
-
+func init() {
+	util.LoadEnv()
+}
 func main() {
 	app := routes.CreateApp()
 
