@@ -45,7 +45,7 @@ func CreatePost(c *gin.Context) {
 // @Param post body models.Posts true "Post Data"
 // @Success 201 {object} models.CreatePostResponse
 // @Failure 400 {object} models.ErrorResponse
-// @Router /update-post [put]
+// @Router /posts/update [put]
 func UpdatePost(c *gin.Context) {
 	var post models.Posts
 	if err := c.ShouldBindJSON(&post); err != nil {
