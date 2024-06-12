@@ -95,7 +95,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/update-post": {
+        "/posts/update": {
             "put": {
                 "description": "update a post",
                 "consumes": [
@@ -134,9 +134,71 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/auth": {
+            "post": {
+                "description": "authenticate user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "user authentication",
+                "parameters": [
+                    {
+                        "description": "Auth Data",
+                        "name": "auth",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Authentication"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.AuthenticationResponse"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "models.Authentication": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.AuthenticationResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Comments": {
             "type": "object",
             "properties": {

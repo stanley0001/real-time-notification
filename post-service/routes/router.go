@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	util "post-service/intergrations"
 	"post-service/services"
 
 	"github.com/gin-gonic/gin"
@@ -36,5 +37,9 @@ func CreateApp() *gin.Engine {
 	})
 	//other endpoints, user comments,post comments new comments...
 
+	//authenticate endpoints
+	app.POST("/users/auth", func(c *gin.Context) {
+		util.Authenticate(c)
+	})
 	return app
 }
