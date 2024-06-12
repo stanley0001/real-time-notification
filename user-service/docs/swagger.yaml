@@ -154,6 +154,31 @@ paths:
       summary: Create a user
       tags:
       - users
+    put:
+      consumes:
+      - application/json
+      description: Update a new user
+      parameters:
+      - description: User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.Users'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreateUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Update a user
+      tags:
+      - users
   /users/auth:
     post:
       description: authenticate user

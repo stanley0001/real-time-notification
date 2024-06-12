@@ -7,6 +7,6 @@ COPY . .
 COPY ./docs ./docs
 RUN go build -o main .
 
-EXPOSE 8081
+EXPOSE 8082
 
 CMD ["./main"]

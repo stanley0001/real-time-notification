@@ -11,6 +11,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var conn *gorm.DB = util.GetDbConnection()
+
 // createUser godoc
 // @Summary Create a user
 // @Description Create a new user
@@ -21,8 +23,6 @@ import (
 // @Success 201 {object} models.CreateUserResponse
 // @Failure 400 {object} models.ErrorResponse
 // @Router /users [post]
-var conn *gorm.DB = util.GetDbConnection()
-
 func CreateUser(c *gin.Context) {
 	var user models.Users
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -38,16 +38,16 @@ func CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, user)
 }
 
-// createUser godoc
-// @Summary Create a user
-// @Description Create a new user
+// UpdateUser godoc
+// @Summary Update a user
+// @Description Update a new user
 // @Tags users
 // @Accept json
 // @Produce json
 // @Param user body models.Users true "User Data"
 // @Success 201 {object} models.CreateUserResponse
 // @Failure 400 {object} models.ErrorResponse
-// @Router /users [post]
+// @Router /users [put]
 func UpdateUser(c *gin.Context) {
 	var user models.Users
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -149,7 +149,7 @@ func GetFollowers(c *gin.Context) {
 	c.JSON(http.StatusOK, followers)
 }
 
-// get Auth godoc
+// Auth godoc
 // @Summary user authentication
 // @Description authenticate user
 // @Tags auth
@@ -160,7 +160,7 @@ func GetFollowers(c *gin.Context) {
 // @Router /users/auth [post]
 func Authenticate(c *gin.Context) {
 	//auth logic here
-	c.JSON(http.StatusOK, models.AuthenticationResponse{Token: "demo token"})
+	c.JSON(http.StatusOK, models.AuthenticationResponse{Status: "success", Token: "demo token"})
 }
 
 func fetchFollowedAndFollowers(userId string, followerId string) (models.Users, models.Users, error) {

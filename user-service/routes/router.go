@@ -39,6 +39,9 @@ func CreateApp() *gin.Engine {
 	app.GET("/users/followers", func(c *gin.Context) {
 		services.GetFollowers(c)
 	})
-
+	//auth endpoints
+	app.POST("/users/auth", func(c *gin.Context) {
+		services.Authenticate(c)
+	})
 	return app
 }
